@@ -1,0 +1,24 @@
+<link href="{{asset('css/main.css')}}" rel="stylesheet">
+
+<nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
+	<a class="navbar-brand col-sm-3 col-md-2 mr-2 ms-5" href="#">--BugTracker--</a>
+	<ul class="navbar-nav px-3">
+		<li class="nav-item text-nowrap">
+
+			<div class="d-flex">
+				{% if app.user %}
+				<div class="text-light">
+					<span class="me-3 d-none d-sm-inline" style="top: 2px; position: relative;">
+						<i class="me-2">Logged in as:</i> {{ app.user.userIdentifier }}
+					</span>
+					<a class="btn btn-primary py-1" href="{{path('user_index', {username: app.user.username})}}">Profile</a>
+					<a class="btn btn-primary py-1" href="{{path('app_logout')}}">Logout</a>
+				</div>
+				{% else %}
+				<a class="btn btn-primary" href="{{path('app_login')}}">Sign in</a>
+				{% endif %}
+
+			</div>
+		</li>
+	</ul>
+</nav>

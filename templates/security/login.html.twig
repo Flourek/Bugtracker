@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+
+
+{% block css %}
+    <link href="{{asset('css/login.css')}}" rel="stylesheet">
+{% endblock %}
+
+
+{% block title %}Log in!{% endblock %}
+
+{% block body %}
+<body class="text-center" cz-shortcut-listen="true">
+
+    <form method="post">
+
+        {% if app.user %}
+            <div class="mb-3">
+                You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
+            </div>
+        {% endif %}
+
+        <div id="cat">
+            <img class="mb-4" src="https://i.pinimg.com/originals/0b/30/b5/0b30b558d728099473fb7dd00605a25b.gif" alt="" width="72" height="72">
+            {% if error %}
+                <div id="bubel">
+                    <img id="bubel-img" class="mb-4" src="{{asset('img/bubble.png')}}">
+
+                    <div id="bubel-text" style="left: 168px; width: 150px;" class=" alert-danger">
+                         {{ error.messageKey|trans(error.messageData, 'security') }}
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+
+        <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+        <label for="inputUsername">Username</label>
+        <input type="text" value="{{ last_username }}" name="username" id="inputUsername" class="form-control" autocomplete="username" required autofocus>
+        <label for="inputPassword">Password</label>
+        <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
+        <p>
+            ...or <a href="{{path('app_register')}}">Create an Account</a>
+        </p>
+        <input type="hidden" name="_csrf_token"
+               value="{{ csrf_token('authenticate') }}"
+        >
+        
+        
+        
+        
+        
+        <input type="hidden" name="_target_path" value="{{ path('chuj') }}" />
+
+
+
+        <button class="btn btn-lg btn-primary btn-block" name="login" type="submit" href="{{ path('chuj') }}" >Sign in</button>
+
+
+
+
+    </form>
+</body>
+
+
+
+{% endblock %}

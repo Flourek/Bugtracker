@@ -1,0 +1,60 @@
+  {% extends 'base.html.twig' %}
+
+{% block css %}
+    <link href="{{asset('css/main.css')}}" rel="stylesheet">
+{% endblock %}
+
+
+{% block body %}
+
+
+    {% include 'navbar.twig.html' %}
+
+
+    <div class="row">
+
+       <div class="col-1 col-md-3"></div>
+
+      <div class="col-10 col-md-6 mt-3">
+
+        <div>
+          <h1>Report a new Issue</h1>
+          <hr class="hr">
+
+          <form name="bug" method="post">
+
+              <label for="{{form.title.vars.id}}" class="form-label">Title:</label>  
+              <input id="{{form.title.vars.id}}" name="{{form.title.vars.full_name}}" required type="text" class="form-control" id="basic-url" placeholder="Write a descriptive title" aria-describedby="basic-addon3">
+              <br>
+              <label for="{{form.body.vars.id}}" class="form-label">Body:</label>
+              <textarea id="{{form.body.vars.id}}" name="{{form.body.vars.full_name}}" required class="form-control comment-textbox mt-1 mb-2" rows=10  placeholder="Add a comment..." aria-label="With textarea"></textarea>
+              <br>
+              <label for="basic-url" class="form-label">Attachments:</label>
+
+               <div class="clearfix ">
+                 <div class="col-8 col-md-6 float-start">
+                  <input id="createReportBrowse" class="form-control" type="file" id="formFileMultiple" multiple />
+                 </div>
+
+                 <div class="float-end">
+                    <button id="{{form.save.vars.id}}" name="{{form.save.vars.name}}" class="btn  btn-primary btn-block" type="submit" href="main.html">Submit</button>
+                 </div>
+              </div>
+              {# {{ form_rest(form) }} #}
+              {{ form_widget(form._token) }}
+
+
+          </form>
+
+
+        </div>
+      </div>
+
+    </div>
+
+
+
+
+      <script src="main.js" crossorigin="anonymous"></script>
+
+{% endblock  %}

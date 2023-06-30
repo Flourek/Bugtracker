@@ -1,0 +1,22 @@
+#text-container{
+    position: relative;
+
+}
+
+.bug-link {
+    position: absolute;
+    max-width: -moz-available;
+    white-space: nowrap;
+    overflow: hidden !important;
+    text-overflow: ellipsis;
+    margin-left: 0.5rem;
+    display: inline-block;
+}
+
+.primary {
+    color: #0B5ED7;
+}
+
+#main-container{
+    margin-left: 10vw
+}

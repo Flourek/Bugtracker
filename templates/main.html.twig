@@ -1,0 +1,255 @@
+{% extends 'base.html.twig' %}
+
+{% block css %}
+    <link href="{{asset('css/main.css')}}" rel="stylesheet">
+{% endblock %}
+
+{% set assigning = app.request.query.get('assigning')%}    
+{% set ASC = app.request.query.get('order') == 'asc' %}    
+
+
+
+
+{% block body %}
+       {% include 'navbar.twig.html' %}
+
+      <div class="container-fluid">
+        <div class="row">
+          <nav class="col-lg-2 d-none d-lg-block bg-light sidebar">
+          
+            <div class="sidebar-sticky" id="sidebar">
+
+            <div class="row " id="sidebar-top">
+              <div class=" ms-3 mt-3">
+                <a class="btn btn-primary w-75"  href="{{path('report_index')}}">Report an Issue</a>
+                <hr>        
+              </div>
+                <div class="sidebar-sort px-3 py-2">
+                  <div class="dropdown show">
+                  <div class="row">
+                  
+                    <a class="btn bg-primary w-75 text-white dropdown-toggle dropdown-menu-right ms-3 " href="#" role="button" id="dropdownMenuLink" data-bs-toggle='dropdown' aria-haspopup="true" aria-expanded="false">
+                      Order by: Date Created
+                    </a>  
+                    <a class="btn bg-primary text-white d-none d-lg-inline w-25 ms-3 mt-1" href=" {{ASC ? '?order=dsc' : '?order=asc'}}" role="button" > {{ASC ? '/\\' : '\\/'}} </a> 
+                  </div>
+
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                      <a class="dropdown-item" href="">Date Created</a>
+                      <a class="dropdown-item" href="">Date Updated</a>
+                    </div>
+                  </div>
+                    <br>
+                  <div class="dropdown show">
+                    {# <a class="btn bg-primary text-white dropdown-toggle ms-3 " href="#" role="button" id="dropdownMenuLink" data-bs-toggle='dropdown' aria-haspopup="true" aria-expanded="false">
+                      Filter Status: All    
+                    </a>   #}
+
+                    <div class="dropdown-menu  dropdown-menu-right" aria-labelledby="dropdownMenuLink">
+                      <a class="dropdown-item" href="#">All</a>
+                      <a class="dropdown-item" href="#">Open</a>
+                      <a class="dropdown-item" href="#">Done</a>
+                    </div>
+                  </div>
+                </div>
+            </div>
+            
+            <div class="row">
+             <div id="bugs-container">
+                  {% set bugs = ASC ? bugs|reverse : bugs %}
+                  {% for bug in bugs %}
+                    <a href="{{path('main_index', {id: bug.id})}}">
+                      <div class="sidebar-item {{ (bug.id == activeBug.id) ? 'active' : '' }}">
+                        <h5>
+                          Bug #{{ bug.id }} 
+                        </h5>
+                        <div class="sidebar-item-text">
+                          {{ bug.title }}
+                        </div>
+                      </div>
+                    </a>
+                  {% endfor %}
+
+              </div>
+              </div>
+                    
+                
+                  
+            </div>
+            
+          </nav>
+
+          <div class="col-md-2">
+          </div>
+
+          {% if activeBug is defined %}
+
+            <div class="col-md-10 ps-4 pt-2" id="main">
+
+              
+              <div class="row">
+                <div class="col-8" id="left-panel">
+                  
+                  <h5 class="fw-bold">BUG-{{activeBug.id}}</h5>
+                  <h2> {{activeBug.title}} </h2>
+                  <hr class="hr hr-blurry" />
+
+                  <a class="btn collapse-title mt-0" data-bs-toggle="collapse" href="#collapseDetails" role="button" aria-expanded="true" aria-controls="collapseDetails">
+                    Details
+                  </a>
+                  <br>
+                  <div class="collapse-text show" id="collapseDetails">
+                    <div class="row">
+                      <div class="col-lg-3 col-md-6 col-6 gray">Enviroment:</div>
+                      <div class="col-lg-3 col-md-6 col-6 ">Windows</div>
+                    </div>
+                    <div class="row">
+                      <div class="col-lg-3 col-md-6 col-6  gray">Status:</div>
+                      <div class="col-lg-3 col-md-6 col-6 ">Unresolved</div>
+                    </div>
+                    <div class="row">
+                      <div class="col-lg-3 col-md-6 col-6  gray">Confirmation Status:</div>
+                      <div class="col-lg-3 col-md-6 col-6 ">Unconfirmed</div>
+                    </div>
+                    <div class="row">
+                      <div class="col-lg-3 col-md-6 col-6  gray">Affects versions:</div>
+                      <div class="col-lg-3 col-md-6 col-6 ">1.19.4</div>
+                    </div>
+
+
+                  </div>
+
+                  <a class="btn collapse-title" data-bs-toggle="collapse" href="#collapseDesc" role="button" aria-expanded="true" aria-controls="collapseDesc">
+                    Description
+                  </a>
+                  <br>
+                  <div class="collapse-text show" id="collapseDesc">
+                    {% apply markdown_to_html %}
+                      {{activeBug.body}}
+                    {% endapply %}
+                  </div>
+
+                  <a class="btn collapse-title" data-bs-toggle="collapse" href="#collapseAttachments" role="button" aria-expanded="true" aria-controls="collapseAttachments">
+                    Attachments
+                  </a>
+                  <br>
+                  <div class="collapse-text show" id="collapseAttachments">
+                    <div id="attachments">
+                      <a class="card" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQqpdXbYG9G-oNEfoU7IlV3_X2dCebejcvlPgUxl3wPvLWT2FZYTIUl3oezMgB2uF0LfMI&usqp=CAU" style="width: 10rem;">
+                        <img class="card-img-top" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQqpdXbYG9G-oNEfoU7IlV3_X2dCebejcvlPgUxl3wPvLWT2FZYTIUl3oezMgB2uF0LfMI&usqp=CAU" alt="Card image cap">
+                        <div class="card-body py-1 ps-2">
+                          <p class="card-text ">sus.png</p>
+                        </div>
+                      </a>
+                      <a class="card" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQqpdXbYG9G-oNEfoU7IlV3_X2dCebejcvlPgUxl3wPvLWT2FZYTIUl3oezMgB2uF0LfMI&usqp=CAU" style="width: 10rem;">
+                        <img class="card-img-top" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQqpdXbYG9G-oNEfoU7IlV3_X2dCebejcvlPgUxl3wPvLWT2FZYTIUl3oezMgB2uF0LfMI&usqp=CAU" alt="Card image cap">
+                        <div class="card-body py-1 ps-2">
+                          <p class="card-text ">sus.png</p>
+                        </div>
+                      </a>
+
+                    </div>
+                  
+                  </div>
+
+                  <a class="btn collapse-title" data-bs-toggle="collapse" href="#collapseComments" role="button" aria-expanded="true" aria-controls="collapseComments">
+                    Comments
+                  </a>
+                  <br>
+                  <div class="collapse-text show" id="collapseComments">
+                      {% include 'comments.html.twig' with {'form' : commentForm, 'comments' : comments} %}
+                  </div>
+
+                  
+                </div>
+                
+                
+                <div class="col-4">
+                  <a class="btn collapse-title  mt-0" data-bs-toggle="collapse" href="#collapsePeople" role="button" aria-expanded="true" aria-controls="collapsePeople">
+                    People
+                  </a>
+                  <div class="collapse-text show" id="collapsePeople">
+                    <div class="row">
+                      <div class="col-lg-4 gray">Reporter:</div>
+                      <div class="col-lg-8 primary"> 
+                        {% include 'common/username.html.twig' with {'user' : activeBug.author} %}
+                      </div>
+                    </div>
+
+                    <div class="row mt-3 pt-2   {{ assigning ? 'border me-5' : '' }} ">
+                      <div class="col-lg-4 gray  ">Assigned:
+                        {% if not assigning and app.user %}
+                          <br>
+                          <a type="button" class="btn btn-primary  py-0 px-1 mt-2" href="?assigning=1">Assign users</a>
+                        {% endif %}
+                        <br>
+                      </div>
+                      
+                      <div class="col-lg-8">
+
+                        {% if assigning and app.user %}
+                          <form method="POST">
+                            {% for u in assignedUsers %}
+                              <button data="{{u.id}}" type="submit" class="btn btn-danger user-unassign py-0 px-1">x</button>
+                              {% include 'common/username.html.twig' with {'user' : u} %}
+
+                              <br>
+                            {% endfor %}
+
+                            <br>
+
+                            Assign a new user:
+                            {# {{ form_widget(assignForm.username) }} #}
+                            <input type="text" id="form_username" name="form[username]" class="form-control"  autocomplete="off" value="">
+                            <button id="{{assignForm.save.vars.id}}" name="{{assignForm.save.vars.name}}" class="btn  btn-primary btn-block" type="submit" href="{{path('main_index')}}">Submit</button>
+                            <a type="button" class="btn btn-primary   my-2"  href="{{path('main_index', {id: activeBug.id})}}">Cancel</a>
+                            
+                            <input type="text" id="form_toDelete" name="form[toDelete]" style="display: none"   autocomplete="off" value="">
+
+                            {{ form_widget(assignForm._token) }}
+                          </form>
+
+
+
+                        {% else %}
+                          {% for u in assignedUsers %}
+                              {% include 'common/username.html.twig' with {'user' : u} %}
+                            <br>
+                          {% endfor %}
+
+                        {% endif %}
+
+                      
+
+
+
+                      
+                      </div>
+                      
+
+                      
+                      
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          {% endif %}
+          
+          
+            
+          </div>
+
+
+          <div cl>
+          </div>
+
+
+        </div>
+      </div>
+  
+
+      <script src="{{asset('js/main.js')}}" crossorigin="anonymous"></script>
+
+{% endblock  %}

@@ -1,0 +1,4 @@
+[ZoneTransfer]
+ZoneId=3
+ReferrerUrl=https://bitbucket.org/tchojna/docker-symfony-starter-kit/src/master/docker-compose.yml
+HostUrl=https://bitbucket.org/tchojna/docker-symfony-starter-kit/raw/aa7d063d01feffe93bbe60b7bf861e1d6f0c2cbe/docker-compose.yml

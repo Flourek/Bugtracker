@@ -1,0 +1,99 @@
+{% extends 'base.html.twig' %}
+
+{% block css %}
+    <link href="{{asset('css/user.css')}}" rel="stylesheet">
+{% endblock %}
+
+
+{% block title %} {{ user.username}} overview {% endblock %}
+
+{% block body %}
+
+    {% include 'navbar.twig.html' %}
+
+ 
+
+    {% if exists %}
+        <div class="row mt-3">
+            <div class="col-3"></div>
+            <div class="col-6">
+                
+                <h1 class="text-center">Overview of user {% include 'common/username.html.twig' with {'user' : user} %}  </h1> 
+                <hr class="hr mb-5">
+
+            </div>
+            <div id="main-container" class="row mt-3">
+                <div class="col-3 me-5">
+                    <h3 class="text-center">Reported issues:</h3>
+                    <hr class="hr mt-0"> 
+
+                    {% for bug in bugs %}
+                        <div id="text-container">
+                            <b>BUG-{{ bug.id }}</b>
+                            <a class="primary bug-link" href="{{path('main_index', {id: bug.id})}}"> {{ bug.title }}</a>
+                        </div>
+
+                        <hr class="hr"> 
+                    {% endfor %}
+                </div>
+                <div class="col-3 me-5">
+                  <h3 class="text-center">Submitted comments:</h3>
+                        <hr class="hr mt-0"> 
+                        <div class="comment">
+                            {% for comment in comments|reverse %}
+                               <div id="text-container">
+                                 <small> Posted at {{ comment.createdAt|date("H:i | d/m/Y") }}  in response to </small>
+                                 <a class="primary bug-link" href="{{path('main_index', {id: comment.bug.id})}}"> {{ comment.bug.title }}</a>
+                               </div>
+
+                                <span class="comment-body ms-3"> {{ comment.body }} </span>
+                                <hr class="hr"> 
+                            {% endfor %}
+                        </div>  
+                </div>
+                <div class="col-3">
+                    <h3 class="text-center">Assigned to:</h3>
+                    <hr class="hr mt-0">
+                    {% for bug in assigned %}
+                        <div id="text-container">
+                            <b>BUG-{{ bug.id }}</b>
+                            <a class="primary bug-link" href="{{path('main_index', {id: bug.id})}}"> {{ bug.title }}</a>
+                        </div>
+                        <hr class="hr"> 
+                    {% endfor %}
+                </div>
+
+
+            </div>
+                <div class="row">
+                    <div class="col-6">
+                     
+
+                    </div>
+                    <div class="col-6">
+                      
+                    </div>
+                </div>
+            </div>
+            
+        
+        </div> 
+
+
+    {# user doesn't exist     #}
+    {% else %}
+        <div class="row mt-3">
+            <div class="col-3"></div>
+
+            <div class="col-6">
+              <div class="alert alert-danger text-center">User doesn't exist</div> 
+            </div>
+        </div>
+        
+    {% endif %}
+
+{% endblock %}
+
+{# {{ comment.body }}
+{{ comment.author.username }}
+at {{ comment.createdAt|date("H:i | d/m/Y") }} #}

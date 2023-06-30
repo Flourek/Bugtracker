@@ -1,0 +1,24 @@
+  {% extends 'base.html.twig' %}
+
+{% block css %}
+    <link href="{{asset('css/login.css')}}" rel="stylesheet">
+{% endblock %}
+
+
+{% block body %}
+      <body class="text-center" cz-shortcut-listen="true">
+        <form class="form-signin">
+          <img class="mb-4" src="https://i.pinimg.com/originals/0b/30/b5/0b30b558d728099473fb7dd00605a25b.gif" alt="" width="72" height="72">
+          <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+          <label for="inputEmail" class="sr-only">Email address</label>
+          <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required="" autofocus="">
+          <label for="inputPassword" class="sr-only">Password</label>
+          <input type="password" id="inputPassword" class="form-control" placeholder="Password" required="">
+          <p>
+            ...or <a href="{{path('app_register')}}">Create an Account</a>
+          </p>
+
+
+          <button class="btn btn-lg btn-primary btn-block" type="submit" href="main.html">Sign in</button>
+        </form>
+{% endblock  %}
